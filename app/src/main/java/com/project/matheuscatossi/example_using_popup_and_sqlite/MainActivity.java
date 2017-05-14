@@ -13,13 +13,20 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.ViewGroup;
 import android.widget.EditText;
+import android.widget.ListView;
 import android.widget.TextView;
+
+import com.project.matheuscatossi.example_using_popup_and_sqlite.adapter.UserCustomAdapter;
+import com.project.matheuscatossi.example_using_popup_and_sqlite.handler.DatabaseHandler;
+import com.project.matheuscatossi.example_using_popup_and_sqlite.model.User;
 
 import org.w3c.dom.Text;
 
+import java.util.ArrayList;
+
 public class MainActivity extends AppCompatActivity {
 
-    TextView name, age;
+    DatabaseHandler db;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -28,8 +35,7 @@ public class MainActivity extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        name = (TextView) findViewById(R.id.name);
-        age = (TextView) findViewById(R.id.age);
+        db = new DatabaseHandler(this);
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
@@ -45,9 +51,9 @@ public class MainActivity extends AppCompatActivity {
                 builder.setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
+                        db.addUser(new User(input_name.getText().toString(), Integer.parseInt(input_age.getText().toString())));
+                        onResume();
                         dialog.dismiss();
-                        age.setText(input_age.getText().toString());
-                        name.setText(input_name.getText().toString());
                     }
                 });
                 builder.setNegativeButton(android.R.string.cancel, new DialogInterface.OnClickListener() {
@@ -60,8 +66,6 @@ public class MainActivity extends AppCompatActivity {
                 builder.show();
             }
         });
-
-
     }
 
     @Override
@@ -79,5 +83,21 @@ public class MainActivity extends AppCompatActivity {
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        db = new DatabaseHandler(this);
+
+        ListView listViewProduto;
+        listViewProduto = (ListView) findViewById(R.id.listUsers);
+
+        ArrayList<User> consulta = (ArrayList<User>) db.getAllUsers();
+
+        UserCustomAdapter rankingCustomAdapter;
+        rankingCustomAdapter = new UserCustomAdapter(consulta, this);
+
+        listViewProduto.setAdapter(rankingCustomAdapter);
     }
 }
