@@ -75,7 +75,7 @@ public class UserCustomAdapter extends ArrayAdapter<User> implements View.OnClic
         lastPosition = position;
 
         viewHolder.tv_name.setText("" + user.getName());
-        viewHolder.tv_age.setText("" + user.getAge());
+        viewHolder.tv_age.setText(", " + user.getAge() + " ano(s)");
 
         return convertView;
     }
