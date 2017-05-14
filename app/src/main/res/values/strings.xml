@@ -1,0 +1,7 @@
+<resources>
+    <string name="app_name">example-using-popup-and-sqlite</string>
+    <string name="action_settings">Settings</string>
+    <string name="hint_age">Idade</string>
+    <string name="hint_name">Nome</string>
+    <string name="add_info">Cadastro na lista</string>
+</resources>
